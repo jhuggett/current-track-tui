@@ -6,8 +6,10 @@ Clone the repo, make sure [Bunjs](https://bun.sh/) is installed, then from root 
 
 ## Controls
 
-[ Space ] play/pause current track
-[ Arrow Left ] go back a track
-[ Arrow Right ] go to the next track
+**[ Space ]** play/pause current track
+
+**[ Arrow Left ]** go back a track
+
+**[ Arrow Right ]** go to the next track
 
 That's it.
