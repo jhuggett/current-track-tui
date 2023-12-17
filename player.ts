@@ -21,14 +21,6 @@ const execute = async (
 export class Player {
   constructor(public shell: BunShell) {}
 
-  async poll(update: () => void) {
-    // while (true) {
-    //   await sleep(500);
-    //   await this.getPlayerState();
-    //   update();
-    // }
-  }
-
   async start() {
     await execute(`osascript -e 'tell application "Music" to play'`);
     await this.getPlayerState();
@@ -69,9 +61,29 @@ export class Player {
     this.currentTrackName = result.stdout.trim();
   }
 
+  currentTrackAlbumName?: string;
+  async getCurrentTrackAlbumName() {
+    const result = await execute(
+      `osascript -e 'tell application "Music" to get album of current track'`
+    );
+
+    this.currentTrackAlbumName = result.stdout.trim();
+  }
+
+  currentTrackArtistName?: string;
+  async getCurrentTrackArtistName() {
+    const result = await execute(
+      `osascript -e 'tell application "Music" to get artist of current track'`
+    );
+
+    this.currentTrackArtistName = result.stdout.trim();
+  }
+
   async getCurrentTrackInformation() {
     await this.getCurrentTrackDuration();
     await this.getCurrentTrackName();
+    await this.getCurrentTrackAlbumName();
+    await this.getCurrentTrackArtistName();
   }
 
   onProgressChange: SubscribableEvent<number> = new SubscribableEvent();

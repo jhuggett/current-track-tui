@@ -1,4 +1,4 @@
-import { BunShell, gray, green } from "@jhuggett/terminal";
+import { BunShell, gray, green, white } from "@jhuggett/terminal";
 import { within } from "@jhuggett/terminal/bounds/bounds";
 import { Player } from "./player";
 
@@ -34,18 +34,25 @@ try {
       foregroundColor: player.currentState === "playing" ? green() : gray(),
     });
     cursor.newLine();
+    cursor.write(
+      `${player.currentTrackAlbumName} - ${player.currentTrackArtistName}`,
+      {
+        foregroundColor:
+          player.currentState === "playing" ? green(0.7) : gray(),
+      }
+    );
 
+    cursor.newLine();
     if (player.currentTrackDuration && player.currentTrackProgress) {
       cursor.write(
         `${
           player.currentTrackProgress && Math.floor(player.currentTrackProgress)
-        }s of ${
+        }s/${
           player.currentTrackDuration && Math.floor(player.currentTrackDuration)
-        }s (${Math.round(
-          (player.currentTrackProgress / player.currentTrackDuration) * 100
-        )}%)`,
+        }s`,
         {
-          foregroundColor: gray(),
+          foregroundColor:
+            player.currentState === "playing" ? white(0.75) : gray(),
         }
       );
     }
@@ -78,6 +85,14 @@ try {
 
   container.on("Arrow Left", () => {
     player.previous();
+  });
+
+  container.on("q", () => {
+    stopProgram = true;
+  });
+
+  container.on("Escape", () => {
+    stopProgram = true;
   });
 
   while (!stopProgram) {
